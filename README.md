@@ -1,14 +1,8 @@
-JS TO TS CONVERSION 
+Typescript Conversion 
 ====================
 
-1. To run project
+1. To run slides
     ```sh
-    $ yarn install
-    $ yarn start
-    ```
-
-2. To run spectacle. Go to directory spectacle
-  ```sh
     $ yarn install
     $ yarn start
     ```
