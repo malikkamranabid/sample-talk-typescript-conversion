@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width initial-scale=1" />
+      <title>Spectacle</title>
+      <link
+         href="https://fonts.googleapis.com/css?family=Lobster+Two:400,700"
+         rel="stylesheet"
+         type="text/css"
+         />
+      <link
+         href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700"
+         rel="stylesheet"
+         type="text/css"
+         />
+      <link
+         href="https://unpkg.com/normalize.css@7/normalize.css"
+         rel="stylesheet"
+         type="text/css"
+         />
+   </head>
+   <body>
+      <div id="root"></div>
+      <script src="https://unpkg.com/prop-types@15/prop-types.js"></script>
+      <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+      <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+      <script src="https://unpkg.com/@babel/standalone/babel.js"></script>
+      <script src="https://unpkg.com/spectacle@^5/dist/spectacle.js"></script>
+      <script src="https://unpkg.com/spectacle@^5/lib/one-page.js"></script>
+      <script type="text/spectacle">
+         () => {
+           const { themes: { defaultTheme } } = Spectacle;
+           const theme = defaultTheme({
+             primary: "grey"
+           });
+        
+         
+
+         const typesSnippet = `
+         // node-fetch
+         npm install --save @types/node-fetch
+         //  http-errors
+         npm install --save @types/http-errors
+         `;
+
+         const notnullBefore = `
+         // Before
+         const billed_total: number = _.get(prior_order_item, 'attributes.billed_total');
+         // After
+         const billed_total: number = _.get(prior_order_item!, 'attributes.billed_total');`;
+
+    
+        const unknownOrObject =`        
+        // when to use object
+        interface ShippingLabelData {
+            label_info: object;
+        }
+
+        // when to use unknown
+        function IsNilOrObjectFn(value: unknown): value is null | undefined | object {
+            return _.isNil(value) || _.isObject(value);
+        }
+
+        // when to use as keyword for typecasting
+        // Before
+        if (!Uuid.is_uuid(id)) {
+            throw Error();
+          }
+        // After
+        if (!Uuid.is_uuid(id as string)) {
+            throw Error();
+        }
+        
+        `;
+
+        const NotNullSolution = `
+        // Before
+        const billed_total: number = _.get(prior_order_item!, 'attributes.billed_total');
+        // After
+        if(prior_order_item){
+            const billed_total: number = _.get(prior_order_item, 'attributes.billed_total');
+        }
+        `;
+        const asAfterNotNullSolution = `if(prior_order_item){
+            const billed_total: number = _.get(prior_order_item, 'attributes.billed_total');
+        }`;
+        
+        const asUnknown = ``;
+
+        const asObject = ``;
+
+        const asBeforeExport = `
+        //Before
+        module.exports = Tiger;
+        //After
+        export default Tiger;
+        `;
+       
+         const typescriptClassDeck = ` 
+         // Before 
+         function Calendar(selector, events) {
+            this.el = 'test'
+          } 
+          // After
+         class Calendar {
+            el: Element | null; 
+            events: Event[];
+            constructor(selector: string, events: Event[]) {
+            this.el = 'test'
+            }
+         }`;
+
+         const tsIgnoreSnippet = `     
+         // @ts-ignore: To surpress type mismatch error.
+         // TODO: this will be fixed once utils is converted to ts
+         const medical_levels: string[] = util.reduce_auto(
+           medical_check_analyses, (
+           acc: string[],
+           ha: MedicalCheckAnalysis,
+         ) => {
+           acc.push(ha.level);
+         }, [] as string[]);`
+         
+           // Interactive code.
+           const { Component } = React;
+           const { Heading } = Spectacle;
+         
+           class Interactive extends Component {
+             constructor() {
+               super();
+               this.state = {
+                 count: 0
+               };
+               this.handleClick = this.handleClick.bind(this);
+             }
+             handleClick() {
+               this.setState({
+                 count: this.state.count + 1
+               });
+             }
+             render() {
+               const styles = {
+                 padding: 20,
+                 background: "black",
+                 minWidth: 300,
+                 marginTop: 20,
+                 textTransform: "uppercase",
+                 border: "none",
+                 color: "white",
+                 outline: "none",
+                 fontWeight: "bold",
+                 fontSize: "2em"
+               };
+               return (
+                 <div>
+                 {this.state.count < 5 ?
+                   <div>
+                     <Heading size={5} textColor="black">
+                       The button has been clicked {this.state.count} times
+                     </Heading>
+                     <button style={styles} type="button" onClick={this.handleClick}>Click Me</button>
+                   </div> :
+                     <Heading size={5} fit caps textColor="black">Easy there pal</Heading>
+                   }
+                 </div>
+               );
+             }
+           }
+         
+           // --------------------------------------------------------------------
+           // The presentation!
+           // --------------------------------------------------------------------
+           return (
+             <Deck transition={["zoom", "slide"]} theme={theme} transitionDuration={500}>
+               <Slide transition={["zoom"]} bgColor="primary">
+                 <Heading size={1} fit caps>
+                   Migrating from JS into TypeScript at scale
+                 </Heading>
+                  <h3>By: Malik Kamran Abid(GitStart)</h3>'
+                  
+                  
+                  
+                  '
+               </Slide>
+               <Slide transition={["spin", "zoom"]} bgColor="LIGHTGREY">
+                <Heading caps fit size={1} textColor="primary">
+                    Installing third party Types for libraries
+                </Heading>
+                    Search https://microsoft.github.io/TypeSearch/ to find relevant types for existing packages.
+        
+                            <Fill>
+                                <CodePane
+                                lang="jsx"
+                                textSize="20"
+                                source={typesSnippet}
+                                />
+                            </Fill>
+                  
+                
+              </Slide>
+                 <Slide transition={["spin", "zoom"]} bgColor="lightgrey">
+                   <h4>TIP 1: Migrate incrementally instead of a big refactor</h4>
+                   <List>
+                    <ListItem> Modify each PR in a single PR </ListItem>
+                    <ListItem> Add comments if it depends on migration in other PRs </ListItem>
+                    <ListItem> Release each PR early to catch regressions  early</ListItem>
+                   </List>
+                </Slide>
+                <Slide transition={["spin", "zoom"]} bgColor="lightgrey">
+                   <h1>Reducing usage of any while migrating</h1>
+                   <List>
+                       <ListItem>Properly utilising <b>object</b> vs <b>unknown</b> over <b>any</b></ListItem>
+                       
+                       <ListItem><b>Object</b> is more restrictive than <b>any</b></ListItem>
+                           
+                       <ListItem>Utilize <b>as</b> keyword to force type cast</ListItem>
+                   </List>
+               </Slide>
+
+               <Slide transition={["zoom", "fade"]} bgColor="lightgrey">
+                           <Fill>
+                               <CodePane
+                               lang="jsx"
+                               textSize="20"
+                               source={unknownOrObject}
+                               />
+                           </Fill>
+                 
+               </Slide>
+
+               <Slide transition={["spin", "zoom"]} bgColor="lightgrey">
+                <Heading caps fit>Migrating module.exports into ES6 exports</Heading>
+                <Fill>
+                    <CodePane
+                    lang="jsx"
+                    margin="20px auto"
+                    textSize="20"
+                    source={asBeforeExport}
+                    />
+                </Fill>
+                
+             </Slide>
+               <Slide transition={["zoom", "fade"]} bgColor="lightgrey">
+                   <Heading caps fit>Converting global this usage into TypeScript classes</Heading>
+                     <Fill>
+                       <CodePane
+                       lang="jsx"
+                       textSize="20"
+                       source={typescriptClassDeck}
+                       margin="20px auto"
+                     />
+                     </Fill>
+                 </Slide>
+         
+                 <Slide transition={["zoom", "fade"]} bgColor="lightgrey">
+                   <Heading caps fit>Preventing Logic Changes while doing Migration</Heading>
+        
+                           <Fill>
+                               <CodePane
+                               lang="jsx"
+                               title="after"
+                               textSize="20"
+                               source={notnullBefore}
+                               margin="20px auto"
+                               />
+                           </Fill>
+                         
+              
+                 </Slide>
+
+                 <Slide transition={["zoom", "fade"]} bgColor="lightgrey">
+                    <Heading caps fit>Cleanup after migration is done</Heading>
+                            <Fill>
+                                <CodePane
+                                lang="jsx"
+                                textSize="20"
+                                source={NotNullSolution}
+                                margin="20px auto"
+                                />
+                            </Fill>
+               
+                  </Slide>
+
+
+
+            <Slide transition={["zoom", "fade"]} bgColor="lightgrey">
+                <h4>If nothing works, add the ts-ignore to resolve errors</h4>
+                <Fill>
+                    <CodePane
+                    lang="jsx"
+                    textSize="20"
+                    source={tsIgnoreSnippet}
+                    margin="20px auto"
+                    />
+                </Fill>
+                
+            </Slide>
+
+            <Slide transition={["zoom", "fade"]} bgColor="lightgrey">
+                <h1>QA</h1>
+               
+                
+            </Slide>
+        </Deck>
+           );
+
+         }
+      </script>
+   </body>
+</html>
